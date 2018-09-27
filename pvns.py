@@ -13,10 +13,8 @@ PVNS_5 = [10, 11, 12, 13, 15, 16, 18, 20, 22, 24, 27, 24, 27, 30, 33, 36, 39,
 # Returns list of tuples of PVNS values (n, d, error)
 # in order of descending error
 def get_closest_pvns(ratio, pvns, pairs_to_return=3):
-    closest_n = pvns[0]
-    closest_d = pvns[0]
-    closest_error = abs(ratio - closest_n / closest_d)
-    closest_values = [(closest_n, closest_d, closest_error)] * pairs_to_return
+    closest_error = abs(ratio - 1)
+    closest_values = [(pvns[0], pvns[0], closest_error)] * pairs_to_return
     mag_diff = abs(math.floor(math.log(ratio, 10)))
     denominators = [
         x * pow(10, exponent)
@@ -27,12 +25,10 @@ def get_closest_pvns(ratio, pvns, pairs_to_return=3):
     for n in pvns:
         for d in denominators:
             error = abs(ratio - n / d)
-            if error < closest_error:
-                closest_n = n
-                closest_d = d
-                closest_error = error
-                closest_values.insert(0, (closest_n, closest_d, closest_error))
-                closest_values.pop()
+            for i in range(len(closest_values)):
+                if error < closest_values[i][2]:
+                    closest_values.insert(i, (n, d, error))
+                    closest_values.pop()
     return closest_values
 
 if __name__ == '__main__':
