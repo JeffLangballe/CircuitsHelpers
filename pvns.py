@@ -32,6 +32,7 @@ def get_closest_pvns(ratio, pvns, pairs_to_return=3):
                 if error < closest_values[i][2]:
                     closest_values.insert(i, (n, d, error))
                     closest_values.pop()
+                    break
     return closest_values
 
 if __name__ == '__main__':
