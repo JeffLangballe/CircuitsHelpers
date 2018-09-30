@@ -1,8 +1,11 @@
 """
-Script to assist with picking from PVNS values
+Script to assist with picking from 5% PVNS values
+Usage: `python pvns.py <r1/r2 ratio> <number of results to display>`
+Ratio must be between 0 and 1
 """
 
 import math
+import sys
 
 
 PVNS_5 = [10, 11, 12, 13, 15, 16, 18, 20, 22, 24, 27, 24, 27, 30, 33, 36, 39,
@@ -32,4 +35,20 @@ def get_closest_pvns(ratio, pvns, pairs_to_return=3):
     return closest_values
 
 if __name__ == '__main__':
-    print(get_closest_pvns(0.5, PVNS_5, 5))
+    # Read arguments
+    if len(sys.argv) < 3:
+        sys.exit(-1)
+    ratio = float(sys.argv[1])
+    n = int(sys.argv[2])
+
+    # Validate input
+    if ratio <= 0 or ratio >= 1:
+        print('Input ratio not between 0 and 1')
+        sys.exit(1)
+
+    # Calculate closest PVNS and display output
+    for values in get_closest_pvns(ratio, PVNS_5, n):
+        print('R1\t', values[0])
+        print('R2\t', values[1])
+        print('Error\t', values[2])
+        print()
